@@ -1,0 +1,29 @@
+version: '2'
+services:
+  identity_db:
+    image: mongo
+    container_name: identity_db
+    volumes:
+      - ./tmp/data:/data/db
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'your_admin_username'
+      MONGO_INITDB_ROOT_PASSWORD: 'your_admin_password'
+  identity_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/identity
+      - node_modules:/identity/node_modules
+    container_name: identity_app
+    ports:
+      - "3001:3001"
+    links:
+      - identity_db
+    environment:
+      DB_URI: 'mongodb://your_admin_username:your_admin_password@identity_db:27017/identity?authSource=admin'
+
+volumes:
+  node_modules:

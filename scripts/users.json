@@ -1,0 +1,14 @@
+{
+    "clients" : [],
+    "roles" : [ 
+        "user_admin"
+    ],
+    "status" : "enabled",
+    "password" : "$2b$10$D9dx9QBL89p0QnTSZVFV3eFSzKgAHlm4MT0U9qw0QwSjc1SOXps4C",
+    "firstName" : "Chuanhui",
+    "lastName" : "Zhang",
+    "email" : "zchning@gmail.com",
+    "username" : "zchning@gmail.com",
+    "createdAt" : {"$date":"2018-08-10T14:30:48.926Z"},
+    "__v" : 0
+}

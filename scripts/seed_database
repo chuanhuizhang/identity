@@ -1,0 +1,34 @@
+#!/bin/bash
+#./seeds/seed localhost:27017 identity clients ./scripts/clients.json your_admin_username your_admin_password
+
+clear
+
+SECONDS=0
+
+OPTIONS=(
+	--verbose
+	--db $2
+	--collection $3
+	--mode insert
+	--numInsertionWorkers 10
+	--file $4
+)
+
+if [ ! -z $5 ];then
+	OPTIONS+=(--username $5)
+fi
+
+if [ ! -z $6 ];then
+	OPTIONS+=(
+		--password $6
+		--host "$1"
+		--authenticationMechanism SCRAM-SHA-1 
+		--authenticationDatabase "admin"
+	)
+fi
+
+echo ${OPTIONS[@]}
+
+mongoimport ${OPTIONS[@]}
+
+echo $SECONDS

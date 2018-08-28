@@ -1,0 +1,20 @@
+{
+  "name" : "client01",
+  "type" : "web",
+  "grantTypes" : [
+      "client_credentials",
+      "password",
+      "refresh_token"
+  ],
+  "roles" : [
+      "client_regular"
+  ],
+  "resources" : [
+      "stevens"
+  ],
+  "clientKeyId" : "your_client_key_id",
+  "clientKeySecret" : "your_client_key_secret",
+  "status" : "enabled",
+  "createdAt" : {"$date":"2018-08-10T14:30:48.926Z"},
+  "__v" : 0
+}
