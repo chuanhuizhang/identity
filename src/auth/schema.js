@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const Config = require('config')
 const Boom = require('boom')
-const async = require("async")
+const async = require('async')
 const jwt = require('jsonwebtoken')
 
 const Client = require('../clients/model')
@@ -39,7 +39,7 @@ function _verifyBearerCredentials(auth, h) {
     return new Promise((resolve, reject) => {
       async.parallel({
         client: (cb) => {
-          Client.findOne({ 
+          Client.findOne({
             clientKeyId: decoded.clientKeyId,
             status: 'enabled'
           }, { clientKeySecret: false }, cb)
@@ -56,7 +56,7 @@ function _verifyBearerCredentials(auth, h) {
         return resolve(h.authenticated({
           credentials: {
             ..._.omit(decoded, ['iat', 'exp']),
-            scope: [ ...res.user.roles, ...res.client.roles ],
+            scope: [...res.user.roles, ...res.client.roles],
             user: res.user
           }
         }))

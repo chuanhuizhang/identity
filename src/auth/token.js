@@ -14,16 +14,14 @@ const AUTH_JWT_EXPIRES_IN_REFRESH_TOKEN = Config.get('auth.jwt.expiresIn.refresh
 
 const validate = {
   ...validateOptions,
-  payload: {
+  payload: Joi.object({
     grantType: Joi.string().valid(
       'password',
       'refreshToken',
       'clientCredentials'
     ).required(),
-    email: Joi.string().email().when('grantType', {
-      is: 'password',
-      then: Joi.required()
-    }),
+    email: Joi.string().email(),
+    username: Joi.string(),
     password: Joi.string().when('grantType', {
       is: 'password',
       then: Joi.required()
@@ -32,7 +30,7 @@ const validate = {
       is: 'refreshToken',
       then: Joi.required()
     })
-  },
+  }).without('email', 'username'),
   headers: {
     authorization: Joi.string().required()
   }
@@ -43,7 +41,6 @@ const pre = [
     assign: 'verify',
     method: (request) => {
       const { eventEmitter } = request
-
       if (request.payload.grantType === 'refreshToken') {
         try {
           const decoded = jwt.verify(request.payload.refreshToken, AUTH_JWT_SECRET)
@@ -56,10 +53,9 @@ const pre = [
         }
       } else {
         return new Promise((resolve, reject) => {
-          // TODO: Should accept username, email
           const client = _.get(request, 'auth.credentials.client')
 
-          User.findOne({ email: request.payload.email }, (err, user) => {
+          User.findOne(_.pick(request.payload, ['email', 'username']), (err, user) => {
             if (err) return reject(Boom.badImplementation(err))
             if (!user || !bcrypt.compareSync(request.payload.password, user.password)) {
               return reject(Boom.unauthorized('Invalid credentials'))
