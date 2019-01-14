@@ -1,5 +1,6 @@
 const token = require('./token')
 const signup = require('./signup')
+const me = require('./me')
 
 module.exports = [
   {
@@ -11,5 +12,10 @@ module.exports = [
     path: '/v1.0/signup',
     method: 'POST',
     config: signup
+  },
+  {
+    path: '/v1.0/me',
+    method: 'POST',
+    config: me
   },
 ]
